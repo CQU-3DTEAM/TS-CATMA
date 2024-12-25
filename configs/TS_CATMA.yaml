@@ -1,0 +1,59 @@
+SAVE_FREQ: 100
+PRINT_FREQ: 10
+TEST_FREQ: 1
+PRETRAINED: path
+OUTPUT: ./output/
+TAG: ts_catma_loop
+MODEL:
+  NAME: TS_CATMA
+  data_window_len: 360
+  max_seq_len: 360
+  LABEL_CLS:
+    input_dim: 128
+    seq_length: 1
+    num_classes: 2
+    hidden_dim: 128
+  DOMAIN_CLS:
+    input_dim: 128
+    seq_length: 1
+    num_classes: 2
+    hidden_dim: 128
+    gamma: 10
+  ENCODER:
+    model: fcnplus_ema
+    feat_dim: 22
+    d_model: 64
+    out_dim: 128
+    num_layers: 3
+    freeze: False
+  DECODER:
+    model: none
+    d_model: 64
+    num_heads: 8
+    num_layers: 3
+    dim_feedforward: 256
+    dropout: 0.1
+    pos_encoding: fixed
+    activation: relu
+    normalization_layer: BatchNorm
+    feat_dim: 22
+    freeze: False
+TRAIN:
+  AUTO_RESUME: True
+  LOOP: 5
+  EPOCHS: 50
+  NO_PSEUDO_EPOCH: 50
+  PSEUDO_THRESHOLDS: [0.9, 0.9]
+  PSEUDO_FREQ: 10
+  WARMUP_EPOCHS: 20
+  BASE_LR: 3e-4
+  WARMUP_LR: 2.5e-3
+  MIN_LR: 2e-4
+  WEIGHT_DECAY: 0.05
+  CLIP_GRAD: 1.0
+  LR_SCHEDULER:
+    NAME: cosine
+    DECAY_EPOCHS: 30
+    DECAY_RATE: 0.1
+    GAMMA: 0.1
+
